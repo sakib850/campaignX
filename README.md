@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 # MailPilot — AI Multi-Agent BFSI Email Marketing System
 
 **FrostHack / XPECTO 2026 @ IIT Mandi — CampaignX Hackathon by InXiteOut**
@@ -296,3 +297,6 @@ npm run dev
 #   c a m p a i g n X  
  #   c a m p a i g n X  
  
+=======
+# campaignX
+>>>>>>> 936e80a097d390479a902fcebb9eca6372406074
