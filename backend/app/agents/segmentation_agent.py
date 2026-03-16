@@ -280,6 +280,20 @@ def run_segmentation_agent(
             f"Targeting all {len(selected_ids)} remaining uncovered customers to ensure full coverage."
         )
 
+    # ── ML Predictive Sort ─────────────────────────────────────────────────────
+    # Sort the selected users by their "ml_engagement_score" computed by the custom ML model (if available)
+    # Users with the highest predicted probability of high engagement will be prioritized.
+    selected_users_with_scores = [
+        (str(u["id"]), u.get("ml_engagement_score", 0.0))
+        for u in all_users if str(u["id"]) in selected_ids
+    ]
+    selected_users_with_scores.sort(key=lambda x: x[1], reverse=True)
+    selected_ids = [uid for uid, _ in selected_users_with_scores]
+    
+    if selected_users_with_scores and any(score > 0 for _, score in selected_users_with_scores):
+        avg_score = sum(score for _, score in selected_users_with_scores) / len(selected_users_with_scores)
+        reasoning += f" [ML Optimized: Cohort prioritized by predictive engagement. Avg Probability: {avg_score:.2%}]"
+
     # ── Build filter summary ───────────────────────────────────────────────────
     filter_parts = []
     if occupation_keywords:

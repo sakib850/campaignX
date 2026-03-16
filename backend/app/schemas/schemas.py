@@ -34,6 +34,7 @@ class StrategyOutput(BaseModel):
     tone: str
     cta_strategy: str
     reasoning: str
+    send_time: Optional[str] = None
 
 
 class EmailContentOutput(BaseModel):

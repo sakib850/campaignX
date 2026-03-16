@@ -18,7 +18,7 @@ Strict Rules:
 2. No guaranteed returns, no misleading claims (e.g., "best rates guaranteed", "risk-free returns").
 3. Always include a legal disclaimer at the end.
 4. Subject line: CRITICAL — this is the single biggest driver of open rates. Follow these guidelines:
-   - Under 55 characters. English text only — no URLs, no special characters beyond punctuation.
+   - Under 55 characters. English text and 1-2 relevant emojis allowed — no URLs, no special characters beyond punctuation and emojis.
    - Use ONE of these proven high-open-rate techniques:
      a) Personalised question: "Are you maximising your savings, [Profession]?"
      b) Curiosity gap: "What most IT professionals don't know about FD rates"
@@ -36,7 +36,7 @@ Strict Rules:
 
 Required JSON format:
 {{
-  "subject_line": "<high-converting email subject under 55 chars, English text only, uses a proven open-rate technique>",
+  "subject_line": "<high-converting email subject under 55 chars, English text and emojis allowed, uses a proven open-rate technique>",
   "email_body": "<full email body, 150-220 words, opens with customer pain point or aspiration, MUST contain {CTA_URL}>",
   "cta_text": "<specific action-oriented call-to-action button text>",
   "disclaimer": "<legal disclaimer mentioning applicable regulator>"

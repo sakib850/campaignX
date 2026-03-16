@@ -35,7 +35,8 @@ Required JSON format:
   "target_persona": "<specific description: profession, age range, income bracket, financial need>",
   "tone": "<semi-formal | empathetic | urgent | conversational>",
   "cta_strategy": "<single clear action: what the email should make the reader click on>",
-  "reasoning": "<2-3 sentences explaining why this strategy will maximise opens and clicks for this segment>"
+  "reasoning": "<2-3 sentences explaining why this strategy will maximise opens and clicks for this segment>",
+  "send_time": "<predicted chronological time to send based on persona (e.g. 6 PM for engineers, 9 AM for executives)>"
 }"""
 
 
@@ -64,6 +65,7 @@ Analyse the above objective and return a campaign strategy JSON."""
         tone=data.get("tone", "formal"),
         cta_strategy=data.get("cta_strategy", ""),
         reasoning=data.get("reasoning", ""),
+        send_time=data.get("send_time", None),
     )
 
     logger.info(f"[StrategyAgent] Strategy generated. Goal: {result.campaign_goal[:80]}")

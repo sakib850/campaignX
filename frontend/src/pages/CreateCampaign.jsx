@@ -10,34 +10,42 @@ const EXAMPLES = [
 ]
 
 const S = {
-  page: { maxWidth: 680, margin: '0 auto', padding: '40px 24px' },
-  back: { fontSize: 13, color: '#6b7280', marginBottom: 24, display: 'flex', alignItems: 'center', gap: 4 },
-  backBtn: { background: 'none', border: 'none', padding: 0, color: '#6b7280', fontSize: 13, cursor: 'pointer' },
-  title: { fontSize: 22, fontWeight: 700, color: '#111827', margin: '0 0 6px' },
-  subtitle: { fontSize: 14, color: '#6b7280', margin: '0 0 28px' },
-  cohortBox: { background: '#f0fdf4', border: '1px solid #bbf7d0', borderRadius: 8, padding: '14px 16px', marginBottom: 24 },
-  cohortText: { fontSize: 13, color: '#166534', fontWeight: 600, marginBottom: 2 },
-  cohortSub: { fontSize: 12, color: '#15803d' },
-  csvBox: { background: '#eff6ff', border: '1px solid #bfdbfe', borderRadius: 8, padding: '14px 16px', marginBottom: 24 },
-  csvText: { fontSize: 13, color: '#1e40af', fontWeight: 600, marginBottom: 2 },
-  csvSub: { fontSize: 12, color: '#1d4ed8' },
-  csvWarnBox: { background: '#fffbeb', border: '1px solid #fcd34d', borderRadius: 8, padding: '12px 16px', marginBottom: 16 },
-  csvWarnText: { fontSize: 12, color: '#92400e' },
-  csvLink: { color: '#1d4ed8', cursor: 'pointer', textDecoration: 'underline', background: 'none', border: 'none', padding: 0, fontSize: 12 },
-  card: { background: '#fff', border: '1px solid #e5e7eb', borderRadius: 8, padding: 24 },
-  label: { display: 'block', fontSize: 14, fontWeight: 600, color: '#374151', marginBottom: 8 },
-  textarea: { width: '100%', border: '1px solid #d1d5db', borderRadius: 6, padding: '10px 12px', fontSize: 14, color: '#111827', resize: 'vertical', outline: 'none', boxSizing: 'border-box', lineHeight: 1.6 },
-  charCount: { fontSize: 12, color: '#9ca3af', marginTop: 6, marginBottom: 20 },
-  exLabel: { fontSize: 12, fontWeight: 600, color: '#6b7280', textTransform: 'uppercase', letterSpacing: '0.05em', marginBottom: 10 },
-  exBtn: { display: 'block', width: '100%', textAlign: 'left', background: '#f9fafb', border: '1px solid #e5e7eb', borderRadius: 6, padding: '8px 12px', fontSize: 13, color: '#374151', marginBottom: 6, cursor: 'pointer' },
-  error: { background: '#fef2f2', border: '1px solid #fecaca', borderRadius: 6, padding: '10px 14px', fontSize: 13, color: '#b91c1c', marginTop: 16 },
-  submit: { width: '100%', background: '#1d4ed8', color: '#fff', border: 'none', borderRadius: 6, padding: '11px 0', fontSize: 15, fontWeight: 600, marginTop: 20, display: 'flex', alignItems: 'center', justifyContent: 'center', gap: 8 },
-  submitDisabled: { opacity: 0.5, cursor: 'not-allowed' },
-  pipeline: { marginTop: 28, background: '#fff', border: '1px solid #e5e7eb', borderRadius: 8, padding: '18px 20px' },
-  pipelineTitle: { fontSize: 12, fontWeight: 600, color: '#6b7280', textTransform: 'uppercase', letterSpacing: '0.05em', marginBottom: 14 },
-  pipelineRow: { display: 'flex', alignItems: 'center', gap: 8, flexWrap: 'wrap' },
-  pipelineStep: { background: '#f9fafb', border: '1px solid #e5e7eb', borderRadius: 6, padding: '6px 14px', fontSize: 13, color: '#374151' },
-  pipelineArrow: { color: '#9ca3af', fontSize: 14 },
+  page: { maxWidth: 800, margin: '0 auto', padding: '50px 24px' },
+  back: { fontSize: 12, color: '#64748b', marginBottom: 28, display: 'flex', alignItems: 'center', gap: 6, textTransform: 'uppercase', letterSpacing: '0.1em', fontWeight: 600 },
+  backBtn: { background: 'none', border: 'none', padding: 0, color: '#94a3b8', fontSize: 12, cursor: 'pointer', transition: 'color 0.2s' },
+  title: { fontSize: 26, fontWeight: 800, color: '#f8fafc', margin: '0 0 10px', textShadow: '0 0 15px rgba(56,189,248,0.3)', letterSpacing: '0.02em' },
+  subtitle: { fontSize: 14, color: '#94a3b8', margin: '0 0 32px', lineHeight: 1.6, fontWeight: 500 },
+
+  cohortBox: { background: 'rgba(16, 185, 129, 0.05)', border: '1px solid rgba(16, 185, 129, 0.3)', borderRadius: 12, padding: '18px 20px', marginBottom: 32, backdropFilter: 'blur(12px)', boxShadow: '0 0 20px rgba(16,185,129,0.1)' },
+  cohortText: { fontSize: 13, color: '#34d399', fontWeight: 700, marginBottom: 4, letterSpacing: '0.05em', textTransform: 'uppercase', display: 'flex', alignItems: 'center', gap: 8 },
+  cohortSub: { fontSize: 13, color: '#6ee7b7' },
+  
+  csvBox: { background: 'rgba(56, 189, 248, 0.05)', border: '1px solid rgba(56, 189, 248, 0.3)', borderRadius: 12, padding: '18px 20px', marginBottom: 24, backdropFilter: 'blur(12px)', boxShadow: '0 0 20px rgba(56,189,248,0.1)' },
+  csvText: { fontSize: 13, color: '#38bdf8', fontWeight: 700, marginBottom: 4, letterSpacing: '0.05em', textTransform: 'uppercase' },
+  csvSub: { fontSize: 13, color: '#7dd3fc' },
+  
+  csvWarnBox: { background: 'rgba(245, 158, 11, 0.05)', border: '1px solid rgba(245, 158, 11, 0.4)', borderRadius: 12, padding: '16px 20px', marginBottom: 32 },
+  csvWarnText: { fontSize: 13, color: '#fbbf24', lineHeight: 1.5 },
+  csvLink: { color: '#fbbf24', cursor: 'pointer', textDecoration: 'underline', background: 'none', border: 'none', padding: 0, fontSize: 13, fontWeight: 700 },
+
+  card: { background: 'rgba(15, 17, 26, 0.4)', border: '1px solid rgba(255, 255, 255, 0.05)', borderRadius: 12, padding: 32, backdropFilter: 'blur(16px)', boxShadow: '0 8px 32px rgba(0,0,0,0.5)' },
+  label: { display: 'block', fontSize: 13, fontWeight: 600, color: '#cbd5e1', marginBottom: 12, letterSpacing: '0.05em', textTransform: 'uppercase' },
+  textarea: { width: '100%', background: 'rgba(0,0,0,0.2)', border: '1px solid rgba(255,255,255,0.1)', borderRadius: 8, padding: '14px 16px', fontSize: 15, color: '#f8fafc', resize: 'vertical', outline: 'none', boxSizing: 'border-box', lineHeight: 1.6, transition: 'all 0.3s', boxShadow: 'inset 0 2px 4px rgba(0,0,0,0.5)' },
+  
+  charCount: { fontSize: 12, color: '#64748b', marginTop: 10, marginBottom: 28, fontWeight: 500, fontFamily: 'monospace' },
+  exLabel: { fontSize: 12, fontWeight: 600, color: '#94a3b8', textTransform: 'uppercase', letterSpacing: '0.1em', marginBottom: 12 },
+  
+  exBtn: { display: 'block', width: '100%', textAlign: 'left', background: 'rgba(255,255,255,0.02)', border: '1px solid rgba(255,255,255,0.05)', borderRadius: 8, padding: '12px 16px', fontSize: 14, color: '#cbd5e1', marginBottom: 8, cursor: 'pointer', transition: 'all 0.2s', lineHeight: 1.5 },
+  error: { background: 'rgba(239, 68, 68, 0.1)', border: '1px solid rgba(239, 68, 68, 0.3)', borderRadius: 8, padding: '12px 16px', fontSize: 13, color: '#f87171', marginTop: 20 },
+  
+  submit: { width: '100%', background: 'linear-gradient(135deg, #0ea5e9, #3b82f6)', color: '#fff', border: 'none', borderRadius: 8, padding: '14px 0', fontSize: 15, fontWeight: 800, marginTop: 28, display: 'flex', alignItems: 'center', justifyContent: 'center', gap: 10, textTransform: 'uppercase', letterSpacing: '0.1em', cursor: 'pointer', boxShadow: '0 0 20px rgba(14, 165, 233, 0.4)', transition: 'all 0.3s' },
+  submitDisabled: { background: 'rgba(255,255,255,0.1)', boxShadow: 'none', color: '#64748b', cursor: 'not-allowed', border: '1px solid rgba(255,255,255,0.05)' },
+  
+  pipeline: { marginTop: 36, background: 'rgba(139, 92, 246, 0.05)', border: '1px solid rgba(139, 92, 246, 0.2)', borderRadius: 12, padding: '24px', backdropFilter: 'blur(12px)', boxShadow: '0 0 20px rgba(139, 92, 246, 0.1)' },
+  pipelineTitle: { fontSize: 12, fontWeight: 700, color: '#c084fc', textTransform: 'uppercase', letterSpacing: '0.1em', marginBottom: 16, textShadow: '0 0 10px rgba(192,132,252,0.3)' },
+  pipelineRow: { display: 'flex', alignItems: 'center', gap: 12, flexWrap: 'wrap' },
+  pipelineStep: { background: 'rgba(192, 132, 252, 0.1)', border: '1px solid rgba(192, 132, 252, 0.3)', borderRadius: 6, padding: '8px 16px', fontSize: 12, fontWeight: 600, color: '#e9d5ff', letterSpacing: '0.05em' },
+  pipelineArrow: { color: '#c084fc', fontSize: 16, textShadow: '0 0 8px currentColor' },
 }
 
 export default function CreateCampaign() {
@@ -71,7 +79,7 @@ export default function CreateCampaign() {
       const res = await createCampaign(objective.trim())
       navigate(`/campaign/${res.data.campaign_id}/preview`)
     } catch (err) {
-      setError(err.response?.data?.detail || err.message || 'Something went wrong.')
+      setError(err.response?.data?.detail || err.message || 'Transmission intercept error.')
     } finally {
       setLoading(false)
     }
@@ -82,62 +90,64 @@ export default function CreateCampaign() {
   return (
     <div style={S.page}>
       <div style={S.back}>
-        <button style={S.backBtn} onClick={() => navigate('/')}>Campaigns</button>
-        <span>/</span>
-        <span>New Campaign</span>
+        <button style={S.backBtn} onClick={() => navigate('/')} onMouseEnter={e => e.currentTarget.style.color = '#38bdf8'} onMouseLeave={e => e.currentTarget.style.color = '#94a3b8'}>ARCHIVES</button>
+        <span style={{color: '#475569'}}>/</span>
+        <span style={{color: '#e2e8f0'}}>New Protocol Initialize</span>
       </div>
 
-      <h1 style={S.title}>New Campaign</h1>
+      <h1 style={S.title}>Campaign Deployment</h1>
       <p style={S.subtitle}>
-        Describe your xDeposit campaign objective in plain English. The AI agents will plan, write, and validate the campaign automatically.
+        Define marketing objective vector. The embedded AI hivemind will autonomously formulate, construct, and validate the logic sequence.
       </p>
 
-      {/* Data source info */}
       {dataSource === 'csv' ? (
         <>
           <div style={S.csvBox}>
             <p style={S.csvText}>
-              CSV Dataset active
-              {csvInfo ? ` — ${csvInfo.row_count.toLocaleString()} rows` : ''}
+              <span className="animate-pulse-glow" style={{ display: 'inline-block', width: 8, height: 8, background: '#38bdf8', borderRadius: '50%', boxShadow: '0 0 8px #38bdf8' }} />
+              LOCAL ARCHIVE DATASET ACTIVE
+              {csvInfo ? ` — ${csvInfo.row_count.toLocaleString()} ENTITIES` : ''}
             </p>
             <p style={S.csvSub}>
               {csvInfo
-                ? `Columns: ${csvInfo.columns.slice(0, 6).join(', ')}${csvInfo.columns.length > 6 ? ', ...' : ''}`
-                : 'No file uploaded yet — go to Settings to upload a CSV.'}
+                ? `VECTORS: ${csvInfo.columns.slice(0, 5).join(', ')}${csvInfo.columns.length > 5 ? ', ...' : ''}`
+                : 'NO FILE UPLOADED — NAVIGATE TO SETTINGS DIRECTORY.'}
             </p>
           </div>
           <div style={S.csvWarnBox}>
             <p style={S.csvWarnText}>
-              Customer IDs in your CSV must match the CampaignX cohort for sends and analytics to work.
-              To switch back to the live cohort, go to{' '}
-              <button style={S.csvLink} onClick={() => navigate('/settings')}>Settings</button>.
+              Identities must match the active global CampaignX cohort to ensure sync. To recalibrate to live cohort stream, open <button style={S.csvLink} onClick={() => navigate('/settings')}>System Settings</button>.
             </p>
           </div>
         </>
       ) : (
         <div style={S.cohortBox}>
-          <p style={S.cohortText}>1,000-customer cohort loaded live from CampaignX API</p>
-          <p style={S.cohortSub}>Segmentation agent will select the best-fit recipients from the real cohort at send time.</p>
+          <p style={S.cohortText}>
+            <span className="animate-pulse-glow" style={{ display: 'inline-block', width: 8, height: 8, background: '#34d399', borderRadius: '50%', boxShadow: '0 0 8px #34d399' }} />
+            LIVE COHORT: 1,000 NODES SECURED
+          </p>
+          <p style={S.cohortSub}>Autonomous array will filter optimal engagement vectors at execution runtime.</p>
         </div>
       )}
 
-      {/* Form */}
       <form onSubmit={handleSubmit} style={S.card}>
         <label style={S.label}>
-          Campaign Objective <span style={{ color: '#ef4444' }}>*</span>
+          Objective Directive <span style={{ color: '#38bdf8' }}>*</span>
         </label>
         <textarea
           value={objective}
           onChange={(e) => setObjective(e.target.value)}
-          rows={5}
-          placeholder="e.g. Promote SuperbFSI xDeposit to IT professionals looking for high-yield fixed deposits..."
+          rows={6}
+          placeholder="Enter objective. E.g., Deploy SuperbFSI xDeposit vectors to software engineers..."
           style={S.textarea}
+          onFocus={e => e.target.style.borderColor = 'rgba(56, 189, 248, 0.5)'}
+          onBlur={e => e.target.style.borderColor = 'rgba(255,255,255,0.1)'}
         />
-        <p style={S.charCount}>{objective.length} characters — minimum 10</p>
+        <p style={S.charCount}>{objective.length} bytes / Minimum 10 bytes</p>
 
-        <p style={S.exLabel}>Example objectives</p>
+        <p style={S.exLabel}>Suggested Vectors</p>
         {EXAMPLES.map((ex, i) => (
-          <button key={i} type="button" style={S.exBtn} onClick={() => setObjective(ex)}>
+          <button key={i} type="button" style={S.exBtn} onClick={() => setObjective(ex)} onMouseEnter={e => {e.currentTarget.style.background = 'rgba(255,255,255,0.05)'; e.currentTarget.style.borderColor = 'rgba(56,189,248,0.3)'}} onMouseLeave={e => {e.currentTarget.style.background = 'rgba(255,255,255,0.02)'; e.currentTarget.style.borderColor = 'rgba(255,255,255,0.05)'}}>
             {ex}
           </button>
         ))}
@@ -148,19 +158,20 @@ export default function CreateCampaign() {
           type="submit"
           disabled={disabled}
           style={{ ...S.submit, ...(disabled ? S.submitDisabled : {}) }}
+          onMouseEnter={e => { if(!disabled) e.currentTarget.style.boxShadow = '0 0 30px rgba(14, 165, 233, 0.6)' }}
+          onMouseLeave={e => { if(!disabled) e.currentTarget.style.boxShadow = '0 0 20px rgba(14, 165, 233, 0.4)' }}
         >
-          {loading ? 'Running AI agents — please wait...' : 'Run Campaign Pipeline'}
+          {loading ? 'EXECUTING PIPELINE...' : 'INITIALIZE NEURAL SECUENCE'}
         </button>
       </form>
 
-      {/* Pipeline steps */}
       <div style={S.pipeline}>
-        <p style={S.pipelineTitle}>What happens when you submit</p>
+        <p style={S.pipelineTitle}>Architecture Routing Protocol</p>
         <div style={S.pipelineRow}>
-          {['Strategy Agent', 'Content Agent', 'Compliance Agent', 'Segmentation Agent', 'Human Approval'].map((step, i, arr) => (
-            <span key={i} style={{ display: 'flex', alignItems: 'center', gap: 8 }}>
+          {['STRATEGY CORE', 'CONTENT MATRIX', 'COMPLIANCE CHECK', 'SEGMENTATION LOGIC', 'MANUAL OVERRIDE'].map((step, i, arr) => (
+            <span key={i} style={{ display: 'flex', alignItems: 'center', gap: 12 }}>
               <span style={S.pipelineStep}>{step}</span>
-              {i < arr.length - 1 && <span style={S.pipelineArrow}>→</span>}
+              {i < arr.length - 1 && <span style={S.pipelineArrow} className="animate-pulse-glow">→</span>}
             </span>
           ))}
         </div>

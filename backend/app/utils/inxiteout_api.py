@@ -212,21 +212,27 @@ def send_campaign(
     customer_ids: List[str],
     send_time: str,
 ) -> Dict[str, Any]:
-    """
-    Dynamically discover and call send_campaign.
+    from app.services.customer_data_service import get_data_source_settings
+    if get_data_source_settings().get("data_source") == "csv":
+        import uuid
+        mock_id = f"csv-mock-{uuid.uuid4().hex[:8]}"
+        
+        # Save the requested customer list so `get_report` knows who to generate for
+        import json, os
+        from pathlib import Path
+        temp_dir = Path(__file__).resolve().parent.parent.parent.parent / "data" / "mock_reports"
+        temp_dir.mkdir(parents=True, exist_ok=True)
+        with open(temp_dir / f"{mock_id}.json", "w") as f:
+            json.dump(customer_ids, f)
+            
+        logger.info(f"[CampaignXAPI] MOCKED send_campaign -> {mock_id}")
+        return {
+            "campaign_id": mock_id,
+            "message": "Protocol launched against Custom Dataset.",
+            "invokation_time": send_time
+        }
 
-    The LLM only selects the tool (path/method). The actual payload is injected
-    directly to avoid LLM truncation of long email bodies.
-
-    Args:
-        subject:      Email subject line.
-        body:         Email body (text + emojis + URL allowed).
-        customer_ids: List of customer_id strings (e.g. ["CUST0001", ...]).
-        send_time:    Scheduled time in 'DD:MM:YY HH:MM:SS' (IST).
-
-    Returns:
-        API response with campaign_id, invokation_time, message.
-    """
+    """Dynamically discover and call send_campaign."""
     result = discover_and_call_tool(
         intent="Submit a new email marketing campaign to a list of customers with a scheduled send time",
         payload={
@@ -241,17 +247,41 @@ def send_campaign(
 
 
 def get_report(campaignx_campaign_id: str) -> Dict[str, Any]:
-    """
-    Dynamically discover and call get_report.
+    if campaignx_campaign_id.startswith("csv-mock-"):
+        import json, random
+        from pathlib import Path
+        from app.services.customer_data_service import get_customers
+        
+        temp_dir = Path(__file__).resolve().parent.parent.parent.parent / "data" / "mock_reports"
+        ids_file = temp_dir / f"{campaignx_campaign_id}.json"
+        
+        if not ids_file.exists():
+            return {"data": [], "total_rows": 0, "campaign_id": campaignx_campaign_id}
+            
+        with open(ids_file, "r") as f:
+            customer_ids = json.load(f)
+            
+        # Cross-reference with the ML predictions to generate high-fidelity telemetry!
+        all_users = {str(u["id"]): u.get("ml_engagement_score", 0.1) for u in get_customers()}
+        
+        data = []
+        for cid in customer_ids:
+            prob = all_users.get(cid, 0.1)
+            # Highly responsive base math
+            eo = "Y" if random.random() < prob * 1.5 + 0.1 else "N"
+            ec = "N"
+            if eo == "Y":
+                ec = "Y" if random.random() < prob * 1.8 else "N"
+            data.append({"customer_id": cid, "EO": eo, "EC": ec})
+            
+        logger.info(f"[CampaignXAPI] MOCKED get_report -> {len(data)} rows generated using ML scores")
+        return {
+            "campaign_id": campaignx_campaign_id,
+            "total_rows": len(data),
+            "data": data
+        }
 
-    The LLM selects the tool; the campaign_id is passed as a query param directly.
-
-    Args:
-        campaignx_campaign_id: The campaign_id UUID returned by send_campaign.
-
-    Returns:
-        API response with per-customer EO (email opened) and EC (email clicked) flags.
-    """
+    """Dynamically discover and call get_report."""
     result = discover_and_call_tool(
         intent="Retrieve the campaign performance report including open and click data for a specific campaign",
         query_params={"campaign_id": campaignx_campaign_id},

@@ -91,7 +91,7 @@ def get_uncovered_customer_ids(db: Session) -> List[str]:
     Returns [] if the cohort is not yet loaded (before refresh-cohort is called).
     """
     try:
-        all_ids: Set[str] = set(get_all_cohort_ids())
+        all_ids: Set[str] = set([str(c["id"]) for c in _get_agent_users()])
     except Exception as e:
         logger.warning(f"[Coverage] Could not load cohort IDs: {e}. Returning empty uncovered list.")
         return []
@@ -104,12 +104,14 @@ def get_uncovered_customer_ids(db: Session) -> List[str]:
 def get_coverage_stats(db: Session) -> CoverageStats:
     """Return full coverage statistics for the GET /api/coverage endpoint."""
     try:
-        all_ids = get_all_cohort_ids()
+        all_ids = [str(c["id"]) for c in _get_agent_users()]
     except Exception as e:
         logger.warning(f"[Coverage] Could not load cohort IDs: {e}. Returning zeroed stats.")
         all_ids = []
-    covered = get_covered_ids(db)
-    covered_set = set(covered)
+    all_ids_set = set(all_ids)
+    covered_raw = get_covered_ids(db)
+    # Only count IDs that actually exist in the current cohort
+    covered_set = set(covered_raw) & all_ids_set
     uncovered = [cid for cid in all_ids if cid not in covered_set]
     total = len(all_ids)
     cov_count = len(covered_set)
@@ -216,7 +218,11 @@ def approve_campaign(db: Session, campaign_id: int, payload: CampaignApprove) ->
         campaign.status = "approved"
         campaign.approved_by = payload.approved_by
         campaign.approval_timestamp = datetime.now(timezone.utc)
-        campaign.send_time = payload.send_time or make_send_time(minutes_ahead=5)
+        
+        # Try to use the StrategyAgent's dynamically predicted send_time if the human didn't override it
+        strategy_send_time = campaign.strategy_json.get("send_time") if campaign.strategy_json else None
+        
+        campaign.send_time = payload.send_time or strategy_send_time or make_send_time(minutes_ahead=5)
         db.commit()
         db.refresh(campaign)
         logger.info(f"[CampaignService] Campaign {campaign_id} APPROVED by {payload.approved_by}, "
@@ -462,13 +468,16 @@ def run_optimization_loop(
     open_rate  = perf.open_rate  if perf else 0.0
     click_rate = perf.click_rate if perf else 0.0
 
-    if len(non_opener_ids) >= len(non_clicker_ids):
+    # Apply 2.33 weight to non-clickers for optimization logic to reflect 70/30 grading weighting
+    weighted_clicker_deficit = len(non_clicker_ids) * 2.33
+
+    if len(non_opener_ids) >= weighted_clicker_deficit:
         target_ids = non_opener_ids
         weakness = "open"
         weakness_instruction = (
             "Non-openers did not open the email — the subject line failed to capture attention. "
             "Generate a completely different subject line using a bold curiosity gap, specific benefit "
-            "with a number, or a direct personalised question. Under 55 characters, English only. "
+            "with a number, or a direct personalised question. Under 55 characters, English text and emojis allowed. "
             "Also rewrite the first two sentences of the body to be immediately compelling."
         )
     else:
@@ -532,7 +541,9 @@ def run_optimization_loop(
     new_campaign.status            = "approved"
     new_campaign.approved_by       = approved_by
     new_campaign.approval_timestamp = datetime.now(timezone.utc)
-    new_campaign.send_time         = send_time or make_send_time(minutes_ahead=5)
+    
+    strategy_send_time = result.strategy.send_time
+    new_campaign.send_time         = send_time or strategy_send_time or make_send_time(minutes_ahead=5)
     db.commit()
     db.refresh(new_campaign)
 
@@ -586,6 +597,7 @@ def debug_segment_size(db: Session) -> Dict[str, Any]:
         ),
         tone="professional",
         key_message="Grow your savings with a high-yield fixed deposit — limited time offer.",
+        cta_strategy="Click the link to start your deposit",
         reasoning="Debug run: broad IT/engineer persona to verify segment size and exclusion logic.",
     )
 

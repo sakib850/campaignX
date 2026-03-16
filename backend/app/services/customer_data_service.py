@@ -165,6 +165,42 @@ def _read_csv_users() -> List[Dict[str, Any]]:
     if not _CSV_FILE.exists():
         raise FileNotFoundError("No CSV file uploaded yet. Please upload a dataset first.")
 
+    # Optional: Load the Supervised ML Model if present to score engagement probability dynamically
+    ml_scores = None
+    try:
+        import pandas as pd
+        import joblib
+        model_path = _DATA_DIR / "trained_model.pkl"
+        encoder_path = _DATA_DIR / "label_encoders.pkl"
+        
+        if model_path.exists() and encoder_path.exists():
+            rf = joblib.load(model_path)
+            encoders = joblib.load(encoder_path)
+            
+            df = pd.read_csv(_CSV_FILE)
+            drop_cols = ['customer_id', 'Full_name', 'email']
+            X = df.drop(columns=[c for c in drop_cols if c in df.columns], errors='ignore')
+            
+            target_col = 'App_Installed'
+            if target_col in X.columns:
+                X = X.drop(columns=[target_col])
+                
+            for col in X.select_dtypes(include=['object']).columns:
+                if col in encoders:
+                    le = encoders[col]
+                    # Map unseen values to the first known class
+                    known = set(le.classes_)
+                    X[col] = X[col].astype(str).apply(lambda x: x if x in known else le.classes_[0])
+                    X[col] = le.transform(X[col])
+                    
+            probs = rf.predict_proba(X)
+            y_encoder = encoders.get(target_col)
+            y_class_idx = list(y_encoder.classes_).index('Y') if y_encoder and 'Y' in y_encoder.classes_ else 1
+            ml_scores = probs[:, y_class_idx]
+            logger.info(f"[CustomerDataService] Successfully injected ML Engagement Scores for {len(ml_scores)} users.")
+    except Exception as e:
+        logger.error(f"[CustomerDataService] Failed to load ML Model for scoring: {e}")
+
     users = []
     with open(_CSV_FILE, "r", encoding="utf-8-sig") as f:
         reader = csv.DictReader(f)
@@ -178,7 +214,13 @@ def _read_csv_users() -> List[Dict[str, Any]]:
         col_map = {field: _resolve_column(headers_lower, field) for field in _COLUMN_ALIASES}
 
         for idx, row in enumerate(reader, start=1):
-            users.append(_normalize_csv_row(row, col_map, idx))
+            user_dict = _normalize_csv_row(row, col_map, idx)
+            # Inject the calculated machine learning score based on our Random Forest tree
+            if ml_scores is not None and (idx - 1) < len(ml_scores):
+                user_dict["ml_engagement_score"] = float(ml_scores[idx - 1])
+            else:
+                user_dict["ml_engagement_score"] = 0.0
+            users.append(user_dict)
 
     logger.info(f"[CustomerDataService] Loaded {len(users)} customers from CSV.")
     return users
